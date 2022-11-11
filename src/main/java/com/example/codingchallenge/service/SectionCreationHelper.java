@@ -2,35 +2,34 @@ package com.example.codingchallenge.service;
 
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class SectionCreationHelper {
 
-    public List<String> createMorningSection(HashMap<String, Integer> talks) {
+    public List<String> createSection(HashMap<String, Integer> talks, int sectionLength) {
         var morningTalks = new ArrayList<String>();
         var talkLengthSum = 0;
 
-        while (talkLengthSum < 180) {
+        while (talkLengthSum < sectionLength) {
             var talkTitle = talks.keySet().stream().findFirst();
             if (talkTitle.isPresent()) {
                 var talkLength = talks.get(talkTitle.get());
 
-                if (talkLengthSum + talkLength > 180) {
-                   var remainingTime = 180 - talkLengthSum;
+                if (talkLengthSum + talkLength > sectionLength) {
+                    var remainingTime = sectionLength - talkLengthSum;
+                    var optionalTalk = talks.entrySet().stream().filter(e -> e.getValue() <= remainingTime).findFirst();
 
-                   var optionalTalk = talks.entrySet().stream().filter(e -> e.getValue() <= remainingTime).findFirst();
+                    if (optionalTalk.isPresent()) {
+                        var title = optionalTalk.get().getKey();
 
-                   if (optionalTalk.isPresent()) {
-                       var title = optionalTalk.get().getKey();
-                       morningTalks.add(title);
-                       talkLengthSum += optionalTalk.get().getValue();
-                       talks.remove(title);
-                   } else {
-                       break;
-                   }
+                        morningTalks.add(title);
+                        talkLengthSum += optionalTalk.get().getValue();
+                        talks.remove(title);
+                    } else {
+                        break;
+                    }
+
                 } else {
                     morningTalks.add(talkTitle.get());
                     talkLengthSum += talkLength;
