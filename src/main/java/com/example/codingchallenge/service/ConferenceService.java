@@ -13,6 +13,9 @@ public class ConferenceService {
     @Autowired
     private TalkLengthAnalyzer analyzer;
 
+    @Autowired
+    private SectionCreationHelper helper;
+
     public List<String> createSchedule(List<String> input) {
         if (input.isEmpty()) {
             return input;
