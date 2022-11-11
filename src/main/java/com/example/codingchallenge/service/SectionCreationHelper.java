@@ -7,8 +7,8 @@ import java.util.*;
 @Service
 public class SectionCreationHelper {
 
-    public List<String> createSection(HashMap<String, Integer> talks, int sectionLength) {
-        var morningTalks = new ArrayList<String>();
+    public HashMap<String, Integer> createSection(HashMap<String, Integer> talks, int sectionLength) {
+        var morningTalks = new HashMap<String, Integer>();
         var talkLengthSum = 0;
 
         while (talkLengthSum < sectionLength) {
@@ -23,7 +23,7 @@ public class SectionCreationHelper {
                     if (optionalTalk.isPresent()) {
                         var title = optionalTalk.get().getKey();
 
-                        morningTalks.add(title);
+                        morningTalks.put(title, optionalTalk.get().getValue());
                         talkLengthSum += optionalTalk.get().getValue();
                         talks.remove(title);
                     } else {
@@ -31,7 +31,7 @@ public class SectionCreationHelper {
                     }
 
                 } else {
-                    morningTalks.add(talkTitle.get());
+                    morningTalks.put(talkTitle.get(), talkLength);
                     talkLengthSum += talkLength;
                     talks.remove(talkTitle.get());
                 }
