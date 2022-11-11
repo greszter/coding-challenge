@@ -22,4 +22,13 @@ public class TalkLengthAnalyzerTest {
 
         assertThat(length).isEqualTo(60);
     }
+
+    @Test
+    @DisplayName("Analyzer returns 5 for lightning talk")
+    public void testGetTalkLengthReturnFiveForLightning() throws Exception {
+
+        var length = analyzer.getTalkLength("Rails for Python Developers lightning");
+
+        assertThat(length).isEqualTo(5);
+    }
 }
