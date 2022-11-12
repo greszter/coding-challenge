@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @RestController
@@ -17,7 +19,7 @@ public class ConferenceController {
 
 
     @PostMapping("create-schedule")
-    public ResponseEntity<List<String>> addNew(@RequestBody List<String> input) {
+    public ResponseEntity<LinkedHashMap<String, ArrayList<String>>> createSchedule(@RequestBody List<String> input) {
         return ResponseEntity.ok(conferenceService.createSchedule(input));
     }
 }
