@@ -11,33 +11,29 @@ public class SectionCreationHelper {
         var morningTalks = new HashMap<String, Integer>();
         var talkLengthSum = 0;
 
-        while (talkLengthSum < sectionLength) {
+        while (talkLengthSum < sectionLength && !talks.isEmpty()) {
             var talkTitle = talks.keySet().stream().findFirst();
-            if (talkTitle.isPresent()) {
-                var talkLength = talks.get(talkTitle.get());
+            var talkLength = talks.get(talkTitle.get());
 
-                if (talkLengthSum + talkLength > sectionLength) {
-                    var remainingTime = sectionLength - talkLengthSum;
-                    var optionalTalk = talks.entrySet().stream().filter(e -> e.getValue() <= remainingTime).findFirst();
+            if (talkLengthSum + talkLength > sectionLength) {
+                var remainingTime = sectionLength - talkLengthSum;
+                var optionalTalk = talks.entrySet().stream().filter(e -> e.getValue() <= remainingTime).findFirst();
 
-                    if (optionalTalk.isPresent()) {
-                        var title = optionalTalk.get().getKey();
+                if (optionalTalk.isPresent()) {
+                    var title = optionalTalk.get().getKey();
 
-                        morningTalks.put(title, optionalTalk.get().getValue());
-                        talkLengthSum += optionalTalk.get().getValue();
-                        talks.remove(title);
-                    } else {
-                        break;
-                    }
-
+                    morningTalks.put(title, optionalTalk.get().getValue());
+                    talkLengthSum += optionalTalk.get().getValue();
+                    talks.remove(title);
                 } else {
-                    morningTalks.put(talkTitle.get(), talkLength);
-                    talkLengthSum += talkLength;
-                    talks.remove(talkTitle.get());
+                    break;
                 }
+            } else {
+                morningTalks.put(talkTitle.get(), talkLength);
+                talkLengthSum += talkLength;
+                talks.remove(talkTitle.get());
             }
         }
-
         return morningTalks;
     }
 }
