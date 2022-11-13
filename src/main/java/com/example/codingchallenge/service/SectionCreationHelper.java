@@ -7,16 +7,16 @@ import java.util.*;
 @Service
 public class SectionCreationHelper {
 
-    public HashMap<String, Integer> createSection(HashMap<String, Integer> talksInput, int sectionLength) {
+    public HashMap<String, Integer> createSection(HashMap<String, Integer> talksInput, int sectionLengthInMinutes) {
         var talksWithTime = new HashMap<String, Integer>();
         var talkLengthSum = 0;
 
-        while (talkLengthSum < sectionLength && !talksInput.isEmpty()) {
+        while (talkLengthSum < sectionLengthInMinutes && !talksInput.isEmpty()) {
             var talkTitle = talksInput.keySet().stream().findFirst();
             var talkLength = talksInput.get(talkTitle.get());
 
-            if (talkLengthSum + talkLength > sectionLength) {
-                var remainingTime = sectionLength - talkLengthSum;
+            if (talkLengthSum + talkLength > sectionLengthInMinutes) {
+                var remainingTime = sectionLengthInMinutes - talkLengthSum;
                 var optionalTalk = talksInput.entrySet().stream().filter(e -> e.getValue() <= remainingTime).findFirst();
 
                 if (optionalTalk.isPresent()) {
