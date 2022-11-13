@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class ConferenceServiceTest {
@@ -18,12 +19,21 @@ class ConferenceServiceTest {
 	private ConferenceService service;
 
 	@Test
-	@DisplayName("Conference service return list of strings on proper input")
-	public void testCreateListReturnsList() throws Exception {
+	@DisplayName("Conference service returns hashmap with several tracks on valid input")
+	public void testCreateScheduleReturnsMap() throws Exception {
 		var input = getInput();
 		var schedule = service.createSchedule(input);
 
 		assertThat(schedule.size()).isEqualTo(2);
+	}
+
+	@Test
+	@DisplayName("Conference service returns empty map on empty input")
+	public void testCreateScheduleReturnsEmptyMap() throws Exception {
+		var input = new ArrayList<String>();
+		var schedule = service.createSchedule(input);
+
+		assertTrue(schedule.isEmpty());
 	}
 
 	@Test
