@@ -23,9 +23,9 @@ public class ConferenceService {
     private final int MORNING_SECTION_LENGTH = 180;
     private final int EVENINIG_SECTION_LENGTH = 240;
 
-    public LinkedHashMap<String, ArrayList<String>> createSchedule(List<String> input) {
+    public LinkedHashMap<String, List<String>> createSchedule(List<String> input) {
         trackCount = 1;
-        var schedule = new LinkedHashMap<String, ArrayList<String>>();
+        var schedule = new LinkedHashMap<String, List<String>>();
         var talksWithLength = new HashMap<String, Integer>();
 
         if (input.isEmpty()) {
@@ -47,7 +47,7 @@ public class ConferenceService {
         return schedule;
     }
 
-    private void getSchedule(HashMap<String, Integer> talksWithLength, LinkedHashMap<String, ArrayList<String>> schedule) {
+    private void getSchedule(HashMap<String, Integer> talksWithLength, LinkedHashMap<String, List<String>> schedule) {
         var time = getTime("09:00");
         var talkList = new ArrayList<String>();
 

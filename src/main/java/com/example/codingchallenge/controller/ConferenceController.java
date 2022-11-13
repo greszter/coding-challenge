@@ -18,7 +18,7 @@ public class ConferenceController {
     private ConferenceService conferenceService;
 
     @PostMapping("create-schedule")
-    public ResponseEntity<LinkedHashMap<String, ArrayList<String>>> createSchedule(@RequestBody List<String> input) {
+    public ResponseEntity<LinkedHashMap<String, List<String>>> createSchedule(@RequestBody List<String> input) {
         return ResponseEntity.ok(conferenceService.createSchedule(input));
     }
 }
