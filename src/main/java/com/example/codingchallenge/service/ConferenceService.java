@@ -25,6 +25,7 @@ public class ConferenceService {
     private int trackCount = 1;
 
     public LinkedHashMap<String, ArrayList<String>> createSchedule(List<String> input) {
+        trackCount = 1;
         var schedule = new LinkedHashMap<String, ArrayList<String>>();
 
         if (input.isEmpty()) {
@@ -50,7 +51,7 @@ public class ConferenceService {
         var afternoonSection = helper.createSection(talksWithLength, AFTERNOON_SECTION_LENGTH);
         var morningSectionTitles = morningSection.keySet().toArray(new String[morningSection.size()]);
         var afternoonSectionTitles = afternoonSection.keySet().toArray(new String[afternoonSection.size()]);
-        var time = LocalTime.parse("09:00", DateTimeFormatter.ofPattern("HH:mm"));
+        var time = getTime("09:00");
         var talkList = new ArrayList<String>();
 
         for (String title : morningSectionTitles) {
@@ -62,7 +63,7 @@ public class ConferenceService {
         }
 
         talkList.add("12:00PM Lunch");
-        time = LocalTime.parse("01:00", DateTimeFormatter.ofPattern("HH:mm"));
+        time = getTime("01:00");
 
         for (String title : afternoonSectionTitles) {
             var length = afternoonSection.get(title);
@@ -72,8 +73,18 @@ public class ConferenceService {
             time = time.plusMinutes(length);
         }
 
+        if (time.isBefore(getTime("04:00")) || time.equals(getTime("04:00"))) {
+            talkList.add("04:00PM Networking Event");
+        } else {
+            talkList.add("05:00PM Networking Event");
+        }
+
         schedule.put("Track " + trackCount, talkList);
 
         trackCount++;
+    }
+
+    private LocalTime getTime(String timeInString) {
+        return LocalTime.parse(timeInString, DateTimeFormatter.ofPattern("HH:mm"));
     }
 }

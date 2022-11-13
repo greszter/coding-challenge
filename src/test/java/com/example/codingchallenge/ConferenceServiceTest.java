@@ -21,10 +21,29 @@ class ConferenceServiceTest {
 	@DisplayName("Conference service return list of strings on proper input")
 	public void testCreateListReturnsList() throws Exception {
 		var input = getInput();
-
 		var schedule = service.createSchedule(input);
 
 		assertThat(schedule.size()).isEqualTo(2);
+	}
+
+	@Test
+	@DisplayName("Networking event starts at 4PM when talks end until then")
+	public void testNetworkingEventStartsAt4Pm() throws Exception {
+		var input = getInputForShorterTrack();
+		var schedule = service.createSchedule(input);
+		var trackOne = schedule.get("Track 1");
+
+		assertThat(trackOne.get(trackOne.size() - 1)).startsWith("04:00PM");
+	}
+
+	@Test
+	@DisplayName("Networking event starts at 5PM when talks end after 4PM")
+	public void testNetworkingEventStartsAt5Pm() throws Exception {
+		var input = getInputForLongerTrack();
+		var schedule = service.createSchedule(input);
+		var trackOne = schedule.get("Track 1");
+
+		assertThat(trackOne.get(trackOne.size() - 1)).startsWith("05:00PM");
 	}
 
 	public List<String> getInput() {
@@ -53,4 +72,30 @@ class ConferenceServiceTest {
 		return input;
 	}
 
+	public List<String> getInputForShorterTrack() {
+		var input = new ArrayList<String>();
+
+		input.add("Writing Fast Tests Against Enterprise Rails 60min");
+		input.add("Overdoing it in Python 60min");
+		input.add("Lua for the Masses 60min");
+		input.add("Ruby Errors from Mismatched Gem Versions 60min");
+		input.add("Common Ruby Errors 60min");
+		input.add("Rails for Python Developers 60min");
+
+		return input;
+	}
+
+	public List<String> getInputForLongerTrack() {
+		var input = new ArrayList<String>();
+
+		input.add("Writing Fast Tests Against Enterprise Rails 60min");
+		input.add("Overdoing it in Python 60min");
+		input.add("Lua for the Masses 60min");
+		input.add("Ruby Errors from Mismatched Gem Versions 60min");
+		input.add("Common Ruby Errors 60min");
+		input.add("Rails for Python Developers 60min");
+		input.add("Communicating Over Distance 60min");
+
+		return input;
+	}
 }
