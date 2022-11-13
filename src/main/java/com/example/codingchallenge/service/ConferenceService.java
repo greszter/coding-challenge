@@ -20,6 +20,8 @@ public class ConferenceService {
     private SectionCreationHelper helper;
 
     private int trackCount = 1;
+    private final int MORNING_SECTION_LENGTH = 180;
+    private final int EVENINIG_SECTION_LENGTH = 240;
 
     public LinkedHashMap<String, ArrayList<String>> createSchedule(List<String> input) {
         trackCount = 1;
@@ -46,56 +48,44 @@ public class ConferenceService {
     }
 
     private void getSchedule(HashMap<String, Integer> talksWithLength, LinkedHashMap<String, ArrayList<String>> schedule) {
-        var morningSection = helper.createSection(talksWithLength, 180);
-        var afternoonSection = helper.createSection(talksWithLength, 240);
         var time = getTime("09:00");
         var talkList = new ArrayList<String>();
 
-        scheduleMorningSectionWithLunch(time, morningSection, talkList);
+        scheduleSection(time, talksWithLength, talkList, MORNING_SECTION_LENGTH);
 
         time = getTime("01:00");
 
-        scheduleAfternoonSectionWithNetworkingEvent(time, afternoonSection, talkList);
+        scheduleSection(time, talksWithLength, talkList, EVENINIG_SECTION_LENGTH);
 
         schedule.put("Track " + trackCount, talkList);
 
         trackCount++;
     }
 
-    private void scheduleMorningSectionWithLunch(
+    private void scheduleSection(
             LocalTime time,
-            HashMap<String, Integer> morningSection,
-            ArrayList<String> talkList
+            HashMap<String, Integer> talksWithLength,
+            ArrayList<String> talkList,
+            int sectionLength
     ) {
-        var morningSectionTitles = morningSection.keySet().toArray(new String[0]);
+        var section = helper.createSection(talksWithLength, sectionLength);
+        var sectionTitles = section.keySet().toArray(new String[0]);
 
-        for (String title : morningSectionTitles) {
-            var length = morningSection.get(title);
-            String titleWithTime = time + "AM " + title;
+        var partOfDay = sectionLength == MORNING_SECTION_LENGTH ? "AM " : "PM ";
+
+        for (String title : sectionTitles) {
+            var length = section.get(title);
+            String titleWithTime = time + partOfDay + title;
 
             talkList.add(titleWithTime);
             time = time.plusMinutes(length);
         }
 
-        talkList.add("12:00PM Lunch");
-    }
-
-    private void scheduleAfternoonSectionWithNetworkingEvent(
-            LocalTime time,
-            HashMap<String, Integer> afternoonSection,
-            ArrayList<String> talkList
-    ) {
-        var afternoonSectionTitles = afternoonSection.keySet().toArray(new String[0]);
-
-        for (String title : afternoonSectionTitles) {
-            var length = afternoonSection.get(title);
-            String titleWithTime = time + "PM " + title;
-
-            talkList.add(titleWithTime);
-            time = time.plusMinutes(length);
+        if (sectionLength == MORNING_SECTION_LENGTH) {
+            talkList.add("12:00PM Lunch");
+        } else {
+            scheduleNetworkingEvent(time, talkList);
         }
-
-        scheduleNetworkingEvent(time, talkList);
     }
 
     private void scheduleNetworkingEvent(LocalTime time, ArrayList<String> talkList) {
