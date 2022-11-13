@@ -62,7 +62,7 @@ public class ConferenceService {
         }
 
         talkList.add("12:00PM Lunch");
-        time = LocalTime.parse("13:00", DateTimeFormatter.ofPattern("HH:mm"));
+        time = LocalTime.parse("01:00", DateTimeFormatter.ofPattern("HH:mm"));
 
         for (String title : afternoonSectionTitles) {
             var length = afternoonSection.get(title);
