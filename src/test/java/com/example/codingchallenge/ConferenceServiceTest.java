@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -34,6 +35,17 @@ class ConferenceServiceTest {
 		var schedule = service.createSchedule(input);
 
 		assertTrue(schedule.isEmpty());
+	}
+
+	@Test
+	@DisplayName("Conference service leaves out talk without length")
+	public void testCreateScheduleleavesOutTalkWithoutLength() throws Exception {
+		var input = getInputForShorterTrack();
+		input.add("Talk title without length information");
+		var schedule = service.createSchedule(input);
+		var trackOne = schedule.get("Track 1");
+
+		assertFalse(trackOne.stream().anyMatch(str -> str.contains("Talk title without length information")));
 	}
 
 	@Test

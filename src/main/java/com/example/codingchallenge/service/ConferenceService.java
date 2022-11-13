@@ -36,7 +36,10 @@ public class ConferenceService {
 
         input.forEach(talk -> {
             var length = analyzer.getTalkLength(talk);
-            talksWithLength.put(talk, length);
+
+            if (length != 0) {
+                talksWithLength.put(talk, length);
+            }
         });
 
         while (!talksWithLength.isEmpty()) {
