@@ -7,33 +7,33 @@ import java.util.*;
 @Service
 public class SectionCreationHelper {
 
-    public HashMap<String, Integer> createSection(HashMap<String, Integer> talks, int sectionLength) {
-        var morningTalks = new HashMap<String, Integer>();
+    public HashMap<String, Integer> createSection(HashMap<String, Integer> talksInput, int sectionLength) {
+        var talksWithTime = new HashMap<String, Integer>();
         var talkLengthSum = 0;
 
-        while (talkLengthSum < sectionLength && !talks.isEmpty()) {
-            var talkTitle = talks.keySet().stream().findFirst();
-            var talkLength = talks.get(talkTitle.get());
+        while (talkLengthSum < sectionLength && !talksInput.isEmpty()) {
+            var talkTitle = talksInput.keySet().stream().findFirst();
+            var talkLength = talksInput.get(talkTitle.get());
 
             if (talkLengthSum + talkLength > sectionLength) {
                 var remainingTime = sectionLength - talkLengthSum;
-                var optionalTalk = talks.entrySet().stream().filter(e -> e.getValue() <= remainingTime).findFirst();
+                var optionalTalk = talksInput.entrySet().stream().filter(e -> e.getValue() <= remainingTime).findFirst();
 
                 if (optionalTalk.isPresent()) {
                     var title = optionalTalk.get().getKey();
 
-                    morningTalks.put(title, optionalTalk.get().getValue());
+                    talksWithTime.put(title, optionalTalk.get().getValue());
                     talkLengthSum += optionalTalk.get().getValue();
-                    talks.remove(title);
+                    talksInput.remove(title);
                 } else {
                     break;
                 }
             } else {
-                morningTalks.put(talkTitle.get(), talkLength);
+                talksWithTime.put(talkTitle.get(), talkLength);
                 talkLengthSum += talkLength;
-                talks.remove(talkTitle.get());
+                talksInput.remove(talkTitle.get());
             }
         }
-        return morningTalks;
+        return talksWithTime;
     }
 }
