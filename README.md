@@ -2,7 +2,7 @@
 
 ## Problem 2: Conference Track Management
 
-This is a test assignment based on [specification provided by Itemis](###requirements) with the following entry point:
+This is a test assignment based on specification provided by Itemis with the following entry point:
 
 - Create schedule: `/create-schedule`
     - The endpoint expects a `List<String>` that contains all the talks for the conference that has to be added to the schedule
