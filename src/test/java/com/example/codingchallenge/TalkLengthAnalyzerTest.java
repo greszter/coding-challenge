@@ -31,4 +31,13 @@ public class TalkLengthAnalyzerTest {
 
         assertThat(length).isEqualTo(5);
     }
+
+    @Test
+    @DisplayName("Analyzer returns 0 for blank input")
+    public void testGetTalkLengthReturnZeroForBlankInput() throws Exception {
+
+        var length = analyzer.getTalkLength(" ");
+
+        assertThat(length).isEqualTo(0);
+    }
 }

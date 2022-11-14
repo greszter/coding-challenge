@@ -6,6 +6,10 @@ import org.springframework.stereotype.Service;
 public class TalkLengthAnalyzer {
 
     public int getTalkLength(String input) {
+        if (input.isBlank()) {
+            return 0;
+        }
+
         var words = input.split(" ");
         var lastWord = words[words.length - 1];
 
